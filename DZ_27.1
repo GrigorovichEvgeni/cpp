@@ -1,0 +1,164 @@
+#include <iostream>
+
+using namespace std;
+
+struct Element
+{
+	char data;
+	Element* next;
+};
+
+class List
+{
+	Element* Head;
+	Element* Tail;
+	int count;
+public:
+	List();
+	~List();
+	void Add(char data);
+	void Del();
+	void DelAll();
+	void Print();
+	void AddTarget(char data, int c);
+	void DelTarget(int c);
+	char search(int c);
+	int GetCount();
+};
+
+List::List()
+{
+	Head = Tail = 0;
+	count = 0;
+}
+
+List::~List()
+{
+	DelAll();
+}
+
+int List::GetCount()
+{
+	return count;
+}
+
+void List::Add(char data)
+{
+	Element* temp = new Element;
+	temp->data = data;
+	temp->next = NULL;
+	if (Head){
+		Tail->next = temp;
+		Tail = temp;
+	}
+	else
+		Head = Tail = temp;
+	count++;
+}
+
+void List::AddTarget(char data, int c)
+{
+	if (c <= 0 && !(Head)){
+		Add(data);
+		++count;
+		return;
+	}
+	Element * tf = Head;
+	for (int i = 2; i < c; ++i)
+		tf = tf->next;
+	Element * temp = new Element;
+	temp->data = data;
+	temp->next = tf->next;
+	tf->next = temp;
+	++count;
+}
+
+void List::Del(){
+	Element* temp = Head;
+	Head = Head->next;
+	delete temp;
+	count--;
+}
+
+void List::DelTarget(int c)
+{
+	Element * tf = Head;
+	for (int i = 2; i < c; ++i)
+		tf = tf->next;
+
+	tf = tf->next;
+	
+	if (c == count){
+		Element * ptr = Head;
+		for (int i = 2; i < c; ++i){
+			ptr = ptr->next;
+		}
+		Tail = ptr;
+		delete Tail->next;
+		Tail->next = NULL;
+	}
+	else{
+		Element * ptr = Head;
+		for (int i = 2; i < c; ++i){
+			ptr = ptr->next;
+		}
+
+		Element * prev = ptr;
+		Element * cur = ptr->next;
+		Element * next = cur->next;
+		prev->next = next;
+		delete cur;
+
+		--count;
+	}
+}
+
+char List::search(int c)
+{
+	Element * ptr = Head;
+	for (int i = 2; i < c; ++i){
+		ptr = ptr->next;
+	}
+	return ptr->data;
+}
+
+void List::DelAll()
+{
+	while (Head)
+		Del();
+}
+
+void List::Print()
+{
+	Element* temp = Head;
+	while (temp)
+	{
+		cout << temp->data << " ";
+		temp = temp->next;
+	}
+	cout << "\n\n";
+}
+
+int main()
+{
+	List lst;
+	
+	char s[] = "Hello, World!!!";
+	cout << s << "\n\n";
+	int len = strlen(s);
+	for (int i = 0; i < len; ++i)
+		lst.Add(s[i]);
+
+	cout << lst.GetCount() << "\n";
+	lst.Print();
+
+
+	lst.AddTarget('X', 4);
+	lst.DelTarget(5);
+	
+
+
+	lst.Print();
+	cout <<lst.search(11) << endl;
+	cout << lst.GetCount() << "\n";
+}
