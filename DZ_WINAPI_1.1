@@ -1,0 +1,38 @@
+// Файл WINDOWS.H содержит определения, макросы, и структуры 
+// которые используются при написании приложений под Windows. 
+#include <windows.h>
+#include <tchar.h>
+
+//прототип оконной процедуры
+LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
+
+TCHAR szClassWindow[] = TEXT("Каркасное приложение"); /* Имя класса окна */
+
+INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, int nCmdShow)
+{
+	TCHAR S[] = TEXT("Вася Пупкин");
+	int count = wcslen(S);
+	MessageBox(0,
+		S,
+		TEXT("1"),
+		MB_OK | MB_ICONINFORMATION);
+	TCHAR S1[] = TEXT("Лучший специалист");
+	count += wcslen(S1);
+	MessageBox(0,
+		S1,
+		TEXT("1"),
+		MB_OK | MB_ICONINFORMATION);
+	TCHAR S2[] = TEXT("Во всем");
+	count += wcslen(S2);
+	double rez = (double)count / 3.0;
+	
+	TCHAR buf[300]; 
+	_stprintf(buf, TEXT("%f"), rez);
+
+	MessageBox(0,
+		S2,
+		buf,
+		MB_OK | MB_ICONINFORMATION);
+
+	return 0;
+}
